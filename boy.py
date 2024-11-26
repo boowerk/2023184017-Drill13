@@ -208,8 +208,8 @@ class Boy:
 
         # 현재 월드 중심
         self.x, self.y = server.background.w / 2, server.background.h / 2
-        self.sx, self.sy = 0
-        self.ball_count = -100
+        self.sx, self.sy = 0, 0
+        self.ball_count = 0
 
 
     def update(self):
@@ -224,25 +224,27 @@ class Boy:
         # self.y = clamp(25.0, self.y, get_canvas_height()-25.0)
 
         # 월드 좌표 관점의 상하좌우 제한 할려면.
-        self.x = clamp(25.0, self.x, server.background.w - 25.0)
-        self.y = clamp(25.0, self.y, server.background.h - 25.0)
+        self.x = float(clamp(25.0, self.x, server.background.w - 25.0))
+        self.y = float(clamp(25.0, self.y, server.background.h - 25.0))
 
     def handle_event(self, event):
         self.state_machine.handle_event(('INPUT', event))
 
     def draw(self):
-        sx, sy = get_canvas_width() / 2, get_canvas_height() / 2
 
         # 월드 좌표계를 화면 좌표로 변환
         # sx = self.x - server.background.window_left
         # sy = self.y - server.background.window_bottom
 
-        self.image.clip_draw(int(self.frame) * 100, self.action * 100, 100, 100, sx, sy)
-        self.font.draw(int(sx - 100), int(sy + 60), f'({self.x:5.5}, {self.y:5.5})', (255, 255, 0))
+        self.sx, self.sy = self.x - server.background.window_left, self.y - server.background.window_bottom
+
+        self.image.clip_draw(int(self.frame) * 100, self.action * 100, 100, 100, self.sx, self.sy)
+        self.font.draw(int(self.sx - 100), int(self.sy + 60), str(self.ball_count), (255, 255, 0))
+        draw_rectangle(*self.get_bb())
 
 
     def get_bb(self):
-        return self.x - 20, self.y - 50, self.x + 20, self.y + 50
+        return self.sx - 20, self.sy - 50, self.sx + 20, self.sy + 50
 
     def handle_collision(self, group, other):
         pass
