@@ -18,7 +18,7 @@ class Ball:
 
 
     def draw(self):
-        self.image.draw(self.x, self.y)
+        self.image.draw(self.sx, self.sy)
         draw_rectangle(*self.get_bb())
         self.sx, self.sy = self.x - server.background.window_left, self.y - server.background.window_bottom
 
