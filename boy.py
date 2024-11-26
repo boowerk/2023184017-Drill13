@@ -208,7 +208,8 @@ class Boy:
 
         # 현재 월드 중심
         self.x, self.y = server.background.w / 2, server.background.h / 2
-
+        self.sx, self.sy = 0
+        self.ball_count = -100
 
 
     def update(self):
@@ -223,8 +224,8 @@ class Boy:
         # self.y = clamp(25.0, self.y, get_canvas_height()-25.0)
 
         # 월드 좌표 관점의 상하좌우 제한 할려면.
-        # self.x = clamp(25.0, self.x, server.background.w - 25.0)
-        # self.y = clamp(25.0, self.y, server.background.h - 25.0)
+        self.x = clamp(25.0, self.x, server.background.w - 25.0)
+        self.y = clamp(25.0, self.y, server.background.h - 25.0)
 
     def handle_event(self, event):
         self.state_machine.handle_event(('INPUT', event))
